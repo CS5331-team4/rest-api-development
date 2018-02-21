@@ -1,0 +1,51 @@
+SQL Query example
+-----------------
+
+Code that can be used to implement some of the functions
+
+
+ * Register a user:
+INSERT INTO Users (user_name, hash_pw, full_name, age) VALUES ('username', 'hash_in_sha3','tobby the killer', 12);
+
+ * Login
+Do a prepared statment
+And insert the token
+
+ * Logout (to invalidate the given token here 123456)
+UPDATE Users SET token=NULL WHERE token=123456
+
+ * Create diary entry
+INSERT INTO Content (user_id, title, publish_date, public, text) VALUES (1, 'Very cool title ', '2018-02-18 04:00:00', 0, 'SECRET plz dont read');
+ * Same but using the token 234
+INSERT INTO Content (user_id, title, publish_date, public, text) VALUES ((SELECT Users.user_id FROM Users WHERE token='234'), 'title-here', '2018-02-18 04:00:00', 0, 'secret text');
+
+ * Display all public diary entries:
+SELECT * FROM Content WHERE public=1;
+
+ * Delete an existing diary entry (with the chosen content_id):
+DELETE FROM Content WHERE content_id=1;
+ * The same can be done when also matching the token
+DELETE FROM Content WHERE content_id=1 AND Content.user_id=(SELECT Users.user_id FROM Users WHERE token='123456');
+
+ * Display all the diary entry of a user:
+SELECT * FROM Content WHERE user_id=1;
+ * The same can be done using the token instead of user_id
+
+ * Toggle the permissions on an existing diary entry (here to get content_id 5 to private)
+UPDATE Content SET public=0 WHERE content_id=5;
+ * Same but also matching the token 
+UPDATE Content SET public=0 WHERE content_id=5 AND Content.user_id=(SELECT Users.user_id FROM Users WHERE token='123456');
+
+
+N.B.
+----
+
+Example of SQL querries using JOIN to link the 2 tables
+
+
+To to print all the public entry with the writer username:
+SELECT Users.user_name, Content.title, Content.text, Content.public, Content.publish_date
+FROM Content
+INNER JOIN Users ON Users.user_id=Content.user_id WHERE public=1;
+
+

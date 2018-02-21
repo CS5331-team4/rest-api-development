@@ -1,0 +1,18 @@
+Data Base presentation
+----------------------
+
+Table Users
+	user_id		int (should not be set; auto increment)
+	username	varchar size 45 (not NULL and unique)
+	hash_pw		varchar size 45 (in sha3) (not NULL)
+	full_name	varchar size 45 (not NULL)
+	age		int size 11 (not NULL)
+	token		varchar size 45 (is good??) (unique)
+
+Table Content
+	content_id	int (should not be set; auto increment)
+	user_id		int (the one in table Users) (not NULL)
+	title		varchar size 45 (not NULL)
+	publish_date	DATETIME (like 2018-02-18 04:00:00 works)
+	public		Binary (1 for public, 0 for private)
+	text		TEXT (not NULL)

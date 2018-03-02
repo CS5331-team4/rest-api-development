@@ -1,0 +1,8 @@
+<div class="container">
+	<h1 class="text-primary">Task list - </h1>
+	<ul>
+		<li class="list-group-item" *ngFor="let task of taskList">
+			<a routerLink={{task.link}}>{{task.title}}</a>
+		</li>
+	</ul>
+</div>

@@ -96,48 +96,54 @@ Please fill out this section with details relevant to your team.
 
 ### Team Members
 
-1. Member 1 Name
-2. Member 2 Name
-3. Member 3 Name
-4. Member 4 Name
+1. Vipul Sharma
+2. Sonal Devadas Shenoy
+3. Prakhar Gahlot
+4. Perache Loic Ludvoic
 
 ### Short Answer Questions
 
 #### Question 1: Briefly describe the web technology stack used in your implementation.
 
-Answer: Please replace this sentence with your answer.
+MEAN is the free and open source Javascript web technology stack used in our application. It stands for Mongo, Express, Angular and Node.js.
+1. Mongo DB is a free and open-source cross-platform document-oriented database program. It is a NoSQL database program, which means it does not depend on MySQL and SQL-like entries for querying. Instead, it uses schemas that have JSON-like structure in the collections(tables). Mongo, additionally, automatically creates a uniqe string for each entry created, and returns it. 
+2. Express.js is a free and open source web application framework which aims to automate the overhead associated with common web development activities, such as libraries for database access, and templating frameworks. It is the standard framework for Node.js.
+3. AngularJs  is the JavaScript-based open-source frontend web-application counterpart of the stack. The AngularJS framework works by first reading the HTML page, which has additional custom tag attributes embedded into it. Angular interprets those attributes as directives to bind input or output parts of the page to a model that is represented by standard JavaScript variables. The values of those JavaScript variables can be manually set within the code, or retrieved from static or dynamic JSON resources.
+4. Node.js is the foundational element of the "Javascript Everywhere" paradigm. It is the open-source platform used to run JavaScript code on the server. It enables the JavaScript which was in the past used only on clients to be used to serve dynamic content by generating pages, and serving them to the web-clients.
 
 #### Question 2: Are there any security considerations your team thought about?
 
-Answer: Please replace this sentence with your answer.
+1. MongoDB is immune to SQL injection-type attacks. It's not succeptible to SQL-language abuses.
+2. Latest versions of Node and Express were used which addressed many vulnerabilities in previous versions. 
 
 #### Question 3: Are there any improvements you would make to the API specification to improve the security of the web application?
 
-Answer: Please replace this sentence with your answer.
+1. We think a better token-management strategy is needed. If the user closes the browser without logging out, the token remains alive in the database. This is a potential security vulnerability, especially if an attacker can discover the token. A time-based or similar token-expiry is needed.
 
 #### Question 4: Are there any additional features you would like to highlight?
 
-Answer: Please replace this sentence with your answer.
+1. The app is quite light-weight, because jQuery is not needed by the app, and hence not implemented. It usually contributes to a bigger size of a web application.
+2. JWT was implemented to store session data in client-side cookies, but the feature was turned off because of non-compliance with the specification. JWT is a more secure way of storing session information while keeping the server stateless.
 
 #### Question 5: Is your web application vulnerable? If yes, how and why? If not, what measures did you take to secure it?
 
-Answer: Please replace this sentence with your answer.
+The application uses broser storage instead of cookies to store the token on the client side. This is readable by Javascript, and hence succeptible ot XSS attacks.
 
 #### Feedback: Is there any other feedback you would like to give?
 
-Answer: Please replace this sentence with your answer.
+A suggestion would be to make the testing system more flexible so that cutting edge technologies like MongoDB can provide uuid's instead of integers as primary tokens.
+That said, this assignment helped us understand the basics of web development and what goes in to make a workable web implementation.
 
 ### Declaration
 
 #### Please declare your individual contributions to the assignment:
 
-1. Member 1 Name
-    - Integrated feature x into component y
-    - Implemented z
-2. Member 2 Name
-    - Wrote the front-end code
-3. Member 3 Name
-    - Designed the database schema
-4. Member 4 Name
-    - Implemented x
-
+1. Member 1 Perache Loic Ludvoic
+    - Designed the Database Schema and Implemented it
+2. Member 2 Sonal Devadas Shenoy
+    - Implemented the front-end code
+3. Member 3 Name Vipul Sharma
+    - Implemented the RESTful web services on Node.js 
+4. Member 4 Name Prakhar Gahlot
+    - Integrated the Database and Backend.
+    - Wrote the Documentation.

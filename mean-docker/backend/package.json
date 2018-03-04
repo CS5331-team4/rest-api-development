@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "webservices",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CS5331-team4/rest-api-development.git"
+  },
+  "author": "vipul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CS5331-team4/rest-api-development/issues"
+  },
+  "homepage": "https://github.com/CS5331-team4/rest-api-development#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.1",
+    "mongojs": "^2.5.0",
+    "uuid": "^3.2.1"
+  }
+}

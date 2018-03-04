@@ -1,0 +1,11 @@
+
+<div class="container">
+	<div class="list-group">
+		<li class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let entry of entries">
+			<div class="d-flex w-100 justify-content-between">
+				<h5 class="mb-1">{{entry.title}}</h5>
+			</div>
+			<p class="mb-1">{{entry.text}}</p>
+		</li>
+	</div>
+</div>

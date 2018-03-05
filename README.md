@@ -89,12 +89,19 @@ Please replace the example screenshots with screenshots of your completed
 project. Feel free to include more than one.
 
 ![Sample Screenshot](./img/screenshot1.png)
+
 ![Sample Screenshot](./img/screenshot2.png)
+
 ![Sample Screenshot](./img/screenshot3.png)
+
 ![Sample Screenshot](./img/screenshot4.png)
+
 ![Sample Screenshot](./img/screenshot5.png)
+
 ![Sample Screenshot](./img/screenshot6.png)
+
 ![Sample Screenshot](./img/screenshot7.png)
+
 ![Sample Screenshot](./img/screenshot8.png)
 
 ## Administration and Evaluation

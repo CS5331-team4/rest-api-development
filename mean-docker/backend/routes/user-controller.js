@@ -1,7 +1,10 @@
-
-var mongojs = require('mongojs');
 const bcrypt = require('bcrypt');
-var db = mongojs('mongodb://database:27017/tasklist',['user', 'members', 'users']);
+
+/*var mongojs = require('mongojs');
+var db = mongojs('diary',['user', 'members', 'users']);*/
+
+var User = require('../lib/user-model.js');
+
 
 module.exports.listEndpoints = function(req, res){
 	let endpoints = [
@@ -26,18 +29,19 @@ module.exports.listEndpoints = function(req, res){
 }
 
 module.exports.heartbeat = function(req, res){
-	res.status(200).send({status: true});
+	res.status(200).send({'status': true});
 };
 
 module.exports.listMembers = function(req, res){
-	db.members.find(function(err, members){
+	res.status(200).json({'status': true, 'result': ['Vipul Sharma', 'Sonal Devadas Shenoy', 'Prakhar Gahlot', 'Perache Loic Ludvoic']});
+/*	db.members.find(function(err, members){
 		if(err){
 			res.send(err);
 		}
 		else{
 			res.status(200).json({'status': true, 'result': members.map(member => member.name) });
 		}
-	});
+	});*/
 };
 
 module.exports.registerUser = function(req, res){
@@ -60,7 +64,7 @@ module.exports.registerUser = function(req, res){
 		res.status(500).json({'error':'age field cannot be zero or empty'});
 	}
 	else{
-		db.users.find(function(err, users){
+		User.find(function(err, users){
 			if(err){
 				res.send(err);
 			}
@@ -76,14 +80,17 @@ module.exports.registerUser = function(req, res){
 				res.json({'status': false, 'error': 'User already exists!'});
 			}
 			else{
-				let newUser = {
-					"username": username,
-					"password": bcrypt.hashSync(password, 10),
-					"fullname": fullname,
-					"age": age
+				let item = {
+					username: username,
+					password: bcrypt.hashSync(password, 10),
+					fullname: fullname,
+					age: age,
+					token: ''
 				};
 
-				db.users.save(newUser, function(err, newUser){
+				var newUser = new User(item);
+
+				newUser.save(function(err, newUser){
 					if(err){
 						res.status(500);
 						res.json({"error": "unable to register new user"});
@@ -125,7 +132,7 @@ module.exports.getUserData = function(req, res){
 		res.status(500).json({'status': false,'error':'Invalid authentication token.'});
 	}
 	else{
-		db.users.findOne({'token': token}, function(err, user){
+		User.findOne({'token': token}, function(err, user){
 			if(err){
 				res.status(200).json({'status': false,'error': 'Invalid authentication token.'});
 			}

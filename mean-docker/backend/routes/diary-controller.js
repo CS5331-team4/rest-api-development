@@ -1,5 +1,9 @@
-var mongojs = require('mongojs');
-var db = mongojs('mongodb://database:27017/tasklist',['diary', 'users','counters']);
+/*var mongojs = require('mongojs');
+var db = mongojs('diary',['diary', 'users','counters']);*/
+
+var Diary = require('../lib/diary-model.js');
+var User = require('../lib/user-model.js');
+var Counter = require('../lib/counters-model.js');
 
 /*function getNextSequenceValue(sequenceName){
 
@@ -15,18 +19,27 @@ var db = mongojs('mongodb://database:27017/tasklist',['diary', 'users','counters
 }*/
 
 module.exports.getAllEntries = function(req, res){
-	db.diary.find({'public': true}, function(err, entries){
+	Diary.find({'public': true}, function(err, entries){
 		if(err){
 			res.status(200).json({'status': false, 'error': JSON.stringify(err)});
 		}
 		else{
+			console.log(JSON.stringify(entries));
+			var resArray = [];
 			for (var i = 0; i < entries.length; i++) {
-				entries[i].id = entries[i]._id;
-				delete entries[i]._id;
+				var item = {
+					id: entries[i]._id,
+					author: entries[i].author,
+					title: entries[i].title,
+					public: entries[i].public,
+					text: entries[i].text,
+					publish_date: entries[i].publish_date
+				};
+				resArray.push(item);
 			}
 			res.status(200).json({
 				'status': true,
-				'result': entries 
+				'result': resArray 
 			});
 		}
 	});
@@ -40,24 +53,32 @@ module.exports.getUserEntries = function(req, res){
 		res.status(200).json({'status': false, 'error': 'Invalid authentication token.'});
 	}
 	else{
-		db.users.findOne({'token': token}, function(err, user){
+		User.findOne({'token': token}, function(err, user){
 			if(err){
 				res.status(200).json({'status': false, 'error': 'Invalid authentication token.'});
 			}
 			else{
 				if(user !== null){
-					db.diary.find({'author': user.username}, function(err2, entries){
+					Diary.find({'author': user.username}, function(err2, entries){
 						if(err2){
 							res.status(500).send(err);
 						}
 						else{
+							var resArray = [];
 							for (var i = 0; i < entries.length; i++) {
-								entries[i].id = entries[i]._id;
-								delete entries[i]._id;
+								var item = {
+									id: entries[i]._id,
+									author: entries[i].author,
+									title: entries[i].title,
+									public: entries[i].public,
+									text: entries[i].text,
+									publish_date: entries[i].publish_date
+								};
+								resArray.push(item);
 							}
 							res.status(200).json({
 								'status': true,
-								'result': entries 
+								'result': resArray 
 							});
 						}
 					});
@@ -77,6 +98,8 @@ module.exports.createEntry = function(req, res){
 	var text = req.body.text || '';
 	var token = req.body.token || '';
 
+	console.log(title);
+
 	if(title === ''){
 		res.status(500).json({'status': false, 'error': 'title not defined'});
 	}
@@ -87,27 +110,29 @@ module.exports.createEntry = function(req, res){
 		res.status(500).json({'status': false, 'error': 'Please define some text for the diary entry'});
 	}
 	else{
-		db.users.findOne({'token': token}, function(err, user){
+		User.findOne({'token': token}, function(err, user){
 			if(err){
 				res.status(200).json({'status': false, 'error': 'Invalid authentication token.'});
 			}
 			else{
 				if(user !== null){
 
-					db.counters.findAndModify({
-						query:{'_id': "productid" },
-						update: {$inc:{'sequence_value':1}},
-						new:true
-					}, function(err, doc){
-					//	console.log(doc);
-						db.diary.insert({
-							'_id': doc.sequence_value,
-							'author': user.username,
-							'title': title,
-							'public': public,
-							'text': text,
-							'publish_date': new Date()
-						}, function(err, result){
+					Counter.findOneAndUpdate(
+						{_id: "productid" },
+						{$inc:{sequence_value: 1}},
+						function(err, doc){
+						//	console.log(doc);
+						var item = {
+							_id: doc.sequence_value,
+							author: user.username,
+							title: title,
+							public: public,
+							text: text
+						};
+
+						var newentry = new Diary(item);
+
+						newentry.save(function(err, result){
 							if(err){
 								res.status(200).json({'status': false, 'error': 'Invalid authentication token.'});
 							}
@@ -131,13 +156,13 @@ module.exports.deleteEntry = function(req, res){
 
 	var id = req.body.id || 0;
 
+	console.log(id);
+
 	if(id === 0){
 		res.status(200).json({'status': false, 'error': 'Id not defined.'});
 	}
 	else{
-		db.diary.remove({
-			'_id': id
-		}, function(err, result){
+		Diary.findByIdAndRemove(id, function(err, result){
 			if(err){
 				res.status(200).json({'status': false, 'error': 'Invalid authentication token.'});
 			}
@@ -161,16 +186,15 @@ module.exports.updateEntryPermission = function(req, res){
 		res.status(500).json({'status': false, 'error': 'id not defined.'});
 	}
 	else{
-		db.diary.update(
-			{'_id': id},
-			{$set: {'public': public}},
-		 	function(err, result){
+		Diary.findById(id, function(err, result){
 				if(err){
 					res.status(200).json({'status': false, 'error': 'Invalid authentication token.'});
 				}
 				else{
-				//	console.log(result);
-					res.status(200).json({'status': true});
+					result.public = public;
+					result.save(function(err, entry){
+						res.status(200).json({'status': true});
+					});
 				}
 			}
 		);

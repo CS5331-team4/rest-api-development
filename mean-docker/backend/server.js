@@ -8,9 +8,31 @@ var users = require('./routes/user-controller');
 var authenticateController = require('./routes/authenticate-controller');
 var diary = require('./routes/diary-controller');
 
+//mongoose
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://sonalshenoy/mean-docker');
+var User = require('./lib/user-model.js');
+var Counter = require('./lib/counters-model.js');
+
+Counter.findOne({_id: 'productid'}, function(err, data){
+	if(err){
+		console.log(JSON.stringify(err));
+	}
+	else{
+		if(data === null){
+			var item = {
+        		_id: 'productid',
+        		sequence_value: 1
+        	};
+        	var count = new Counter(item);
+        	count.save();
+		}
+	}
+});
+
 //database connection
-var mongojs = require('mongojs');
-var db = mongojs('mongodb://database:27017/tasklist',['users']);
+/*var mongojs = require('mongojs');
+var db = mongojs('diary',['users']);*/
 const port = process.env.PORT || '8080';
 
 
@@ -84,7 +106,8 @@ secureRoutes.use(function(req, res, next){
 					next();
 				}
 			})*/
-			db.users.findOne({'token': token}, function(err, user){
+
+			User.findOne({'token': token}, function(err, user){
 				if(err){
 					res.status(200).json({'status': false, 'error': 'Invalid authentication token.'});
 				}

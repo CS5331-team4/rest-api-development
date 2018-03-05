@@ -1,8 +1,10 @@
 var jwt = require('jsonwebtoken');
-var mongojs = require('mongojs');
-var db = mongojs('mongodb://database:27017/tasklist',['users']);
+/*var mongojs = require('mongojs');
+var db = mongojs('diary',['users']);*/
 var uuidv4 = require('uuid/v4');
 const bcrypt = require('bcrypt');
+
+var User = require('../lib/user-model.js');
 
 module.exports.authenticate = function(req, res){
 
@@ -13,7 +15,7 @@ module.exports.authenticate = function(req, res){
 		res.status(200).json({'status': 'false', 'error': 'username or password is either incorrect or empty'});
 	}
 	else{
-		db.users.findOne({'username': username}, function(err, user){
+		User.findOne({'username': username}, function(err, user){
 			if(err){
 				res.status(200).json({'status': false});
 			}
@@ -32,9 +34,9 @@ module.exports.authenticate = function(req, res){
 
 						var token = uuidv4();
 						
-						db.users.update(
+						User.findOneAndUpdate(
 							{'username': username},
-							{$set: {'token': token}},
+							{'token': token},
 							function(err, result){
 								if(err){
 									res.status(200).json({'status': false});
@@ -69,7 +71,20 @@ module.exports.logout = function(req, res){
 	}
 	else{
 	//	console.log(tokenToBeDeleted);
-		db.users.update({'token': tokenToBeDeleted}, {$set: {'token': ''}});
-		res.status(200).json({'status': true});
+
+		User.findOneAndUpdate(
+			{'token': tokenToBeDeleted},
+			{'token': ''},
+			function(err, result){
+				if(err){
+					res.status(200).json({'status': false});
+				}
+				else{
+					res.json({'status': true});
+				}
+			}
+		);
+
+
 	}
 }

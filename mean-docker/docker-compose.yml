@@ -12,9 +12,9 @@ services:
     ports:
       - "8080:8080" #specify ports forewarding
     links:
-      - database
+      - sonalshenoy
 
-  database: # name of the third service
+  sonalshenoy: # name of the third service
     image: mongo # specify image to build container from
     ports:
       - "27017:27017" # specify port forewarding

@@ -88,7 +88,14 @@ If a response is received, you're good to go.
 Please replace the example screenshots with screenshots of your completed
 project. Feel free to include more than one.
 
-![Sample Screenshot](./img/samplescreenshot.png)
+![Sample Screenshot](./img/screenshot1.png)
+![Sample Screenshot](./img/screenshot2.png)
+![Sample Screenshot](./img/screenshot3.png)
+![Sample Screenshot](./img/screenshot4.png)
+![Sample Screenshot](./img/screenshot5.png)
+![Sample Screenshot](./img/screenshot6.png)
+![Sample Screenshot](./img/screenshot7.png)
+![Sample Screenshot](./img/screenshot8.png)
 
 ## Administration and Evaluation
 
@@ -139,7 +146,7 @@ That said, this assignment helped us understand the basics of web development an
 #### Please declare your individual contributions to the assignment:
 
 1. Member 1 Perache Loic Ludvoic
-    - Designed the Database Schema and Implemented it
+    - Database Setup and Implementation
 2. Member 2 Sonal Devadas Shenoy
     - Implemented the front-end code
 3. Member 3 Name Vipul Sharma
